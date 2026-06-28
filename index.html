@@ -2,469 +2,370 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Plan de Estudios</title>
-</head>
-  <div class="contenedor">
-    <img src="ucp_logo.png" class="logo-superior" alt="Logo superior">
-</div>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla Curricular - Lic. en Diseño Gráfico y Multimedia</title>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fff;
-      margin: 0;
-      padding: 40px 20px;
+      background-color: #f5f5f5;
+      padding: 30px 20px;
+      color: #222;
     }
- .contenedor {
-    position: relative;
-    max-width: 1400px;
-    margin: auto;
-  }
-
-  .logo-superior {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 160px;
-    height: auto;
-  }
-
 
     h1 {
-      font-size: 50px;
-      text-align: left;
-      margin-left: 160px;
-      margin-bottom: 40px;
+      font-size: 28px;
+      font-weight: 600;
       color: #fec400;
+      margin-bottom: 24px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
     .malla {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      max-width: 1200px;
-      margin: auto;
+      gap: 16px;
+      max-width: 1300px;
     }
 
+    @media (max-width: 900px) { .malla { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .malla { grid-template-columns: 1fr; } }
+
     .anio {
-      background-color: #e3e3e3;
+      background: #e8e8e8;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 20px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     }
 
     .anio h2 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #000000;
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 14px;
     }
 
-    .cuatri {
-      margin-bottom: 20px;
-    }
+    .cuatri { margin-bottom: 14px; }
 
     .cuatri h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #666;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 7px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .materia {
-      background-color: #fec400;
-      padding: 8px 10px;
-      margin: 6px 0;
+    .materia-wrap { margin-bottom: 5px; }
+
+    .mat-header {
+      background: #fec400;
+      padding: 7px 10px;
       border-radius: 8px;
       cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      font-size: 12px;
+      font-weight: 600;
+      color: #412402;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      transition: background 0.15s;
     }
 
-    .materia:hover {
-      background-color: #fec4ff;
+    .mat-header:hover { background: #f5b800; }
+    .mat-header.st-reg { background: #ff6b35; color: #fff; text-decoration: line-through; opacity: 0.8; }
+    .mat-header.st-prom { background: #22a06b; color: #fff; text-decoration: line-through; opacity: 0.85; }
+
+    .mat-header .chev {
+      font-size: 10px;
+      margin-left: 5px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
     }
 
-    .materia.hecha {
-      text-decoration: line-through;
-      opacity: 0.5;
-      background-color: #fe4500;
+    .mat-header.open .chev { transform: rotate(180deg); }
+
+    .mat-detail {
+      display: none;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 10px;
     }
 
-    @media (max-width: 900px) {
-      .malla {
-        grid-template-columns: 1fr 1fr;
-      }
+    .mat-detail.open { display: block; }
+
+    .fila {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      font-size: 12px;
+      color: #555;
     }
 
-    @media (max-width: 600px) {
-      .malla {
-        grid-template-columns: 1fr;
-      }
+    .fila:last-child { margin-bottom: 0; }
+
+    .fila label {
+      width: 100px;
+      flex-shrink: 0;
+      font-weight: 500;
     }
-    .materia {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
 
-.materia label {
-  display: none;
-  font-size: 13px;
-  margin-top: 4px;
-}
+    .fila input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+      accent-color: #fec400;
+    }
 
-.materia:hover label {
-  display: inline-block;
-}
+    .fila input[type="number"] {
+      width: 56px;
+      padding: 3px 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f9f9f9;
+      color: #222;
+      font-size: 12px;
+      font-family: inherit;
+    }
 
-.materia input[type="checkbox"] {
-  margin-left: 6px;
-  vertical-align: middle;
-}
+    .fila input[type="number"]:focus {
+      outline: none;
+      border-color: #fec400;
+    }
+
+    .dots {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    .dot.r { background: #ff6b35; }
+    .dot.p { background: #22a06b; }
+    .dot.rc { background: #fec400; border: 1px solid #c89600; }
+    .dot.f { background: #378add; }
+
+    .leyenda {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .leyenda-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
   </style>
 </head>
-<body> 
+<body>
+
 <h1>Lic. en Diseño Gráfico y Multimedia</h1>
 
-<div class="malla">
-  <div class="anio">
-    <h2>1er Año</h2>
-    <div class="cuatri">
-      <h3>1º cuatrimestre</h3>
-      
-    <div class="materia" data-id="1a-1" data-tipo="promocional">
-      Comunicación
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1a-2" data-tipo="regularidad">
-      Intro. a la Informática
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1a-3" data-tipo="regularidad">
-      Metodología del Diseño
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1a-4" data-tipo="regularidad">
-      Morfología I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1a-5" data-tipo="promocional">
-      Taller de Escritura y Oratoria
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-    </div>
-    <div class="cuatri">
-      <h3>2º cuatrimestre</h3>
-      
-    <div class="materia" data-id="1a-6" data-tipo="promocional">
-      Historia del Diseño I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1b-1" data-tipo="regularidad">
-      Informática aplic. al Diseño I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1b-2" data-tipo="regularidad">
-      Intro. a la Tipografía
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="1b-3" data-tipo="especial">
-      Taller de Diseño Gráfico I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-    </div>
-  </div>
-
-  <div class="anio">
-    <h2>2do Año</h2>
-    <div class="cuatri">
-      <h3>1º cuatrimestre</h3>
-      
-    <div class="materia" data-id="1b-4" data-tipo="promocional">
-      Medios de Expresión
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2a-1" data-tipo="regularidad">
-      Tipografía I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2a-2" data-tipo="especial">
-      Taller de Diseño Gráfico II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3b-1" data-tipo="regularidad">
-      Informática aplic. al Diseño II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3b-2" data-tipo="promocional">
-      Semiótica
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-          </div>
-    <div class="cuatri">
-      <h3>2º cuatrimestre</h3>
-      
-    <div class="materia" data-id="2a-3" data-tipo="especial">
-      Diseño y Realización Multimedial I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2a-4" data-tipo="promocional">
-      Historia II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2a-5" data-tipo="promocional">
-      Inglés I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2a-6" data-tipo="regularidad">
-      Morfología II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3b-3" data-tipo="regularidad">
-      Tecnología Gráfica
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-    </div>
-  </div>
-
-  <div class="anio">
-    <h2>3er Año</h2>
-    <div class="cuatri">
-      <h3>1º cuatrimestre</h3>
-      
-    <div class="materia" data-id="3b-4" data-tipo="promocional">
-      Medios y Estrategias
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="4a-3" data-tipo="especial">
-      Taller de Diseño Gráfico III
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3b-5" data-tipo="promocional">
-      Inglés II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="4a-1" data-tipo="regularidad">
-      Tipografía II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="4a-2" data-tipo="especial">
-      Diseño y Producción de Envases
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-    </div>
-    <div class="cuatri">
-      <h3>2º cuatrimestre</h3>
-      
-    <div class="materia" data-id="4a-4" data-tipo="especial">
-      Diseño y Realización Multimedial II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2b-1" data-tipo="regularidad">
-      Fotografía
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" disabled> Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2b-2" data-tipo="promocional">
-      Marketing
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="2b-3" data-tipo="promocional">
-      Portugués I
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-    </div>
-  </div>
-
-  <div class="anio">
-    <h2>4to Año</h2>
-    <div class="cuatri">
-      <h3>1º cuatrimestre</h3>
-      
-    <div class="materia" data-id="3a-1" data-tipo="promocional">
-      Ética, Deontología y Principios Jurídicos
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3a-2" data-tipo="promocional">
-      Innov, Emprend. y Gerenciamiento
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3a-3" data-tipo="especial">
-      Práctica Profesional
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="3a-4" data-tipo="promocional">
-      Portugués II
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-    </div>
-    <div class="cuatri">
-      <h3>2º cuatrimestre</h3>
-      
-    <div class="materia" data-id="4b-1" data-tipo="especial">
-      Práctica Profesional Supervisada
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="4b-2" data-tipo="especial">
-      Taller de Elab. del TF
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-      
-    <div class="materia" data-id="4b-3" data-tipo="especial">
-      Pres. y Aprob. del TIF
-      <label><input type="checkbox" class="regularidad"> Reg</label>
-      <label><input type="checkbox" class="promocion" > Prom</label>
-    </div>
-    
-    </div>
-  </div>
+<div class="leyenda">
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:#ff6b35"></div> Regular</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:#22a06b"></div> Promoción</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:#fec400;border:1px solid #c89600"></div> Recuperatorio</div>
+  <div class="leyenda-item"><div class="leyenda-dot" style="background:#378add"></div> Final</div>
 </div>
 
+<div class="malla" id="malla"></div>
 
 <script>
-  const materias = document.querySelectorAll('.materia');
+const plan = [
+  { anio:"1er Año", cuats:[
+    { label:"1º cuatrimestre", mats:[
+      {id:"1a-1", n:"Comunicación", p:true},
+      {id:"1a-2", n:"Intro. a la Informática", p:false},
+      {id:"1a-3", n:"Metodología del Diseño", p:false},
+      {id:"1a-4", n:"Morfología I", p:false},
+      {id:"1a-5", n:"Taller de Escritura y Oratoria", p:true},
+    ]},
+    { label:"2º cuatrimestre", mats:[
+      {id:"1a-6", n:"Historia del Diseño I", p:true},
+      {id:"1b-1", n:"Informática aplic. al Diseño I", p:false},
+      {id:"1b-2", n:"Intro. a la Tipografía", p:false},
+      {id:"1b-3", n:"Taller de Diseño Gráfico I", p:true},
+    ]},
+  ]},
+  { anio:"2do Año", cuats:[
+    { label:"1º cuatrimestre", mats:[
+      {id:"1b-4", n:"Medios de Expresión", p:true},
+      {id:"2a-1", n:"Tipografía I", p:false},
+      {id:"2a-2", n:"Taller de Diseño Gráfico II", p:true},
+      {id:"3b-1", n:"Informática aplic. al Diseño II", p:false},
+      {id:"3b-2", n:"Semiótica", p:true},
+    ]},
+    { label:"2º cuatrimestre", mats:[
+      {id:"2a-3", n:"Diseño y Realización Multimedial I", p:true},
+      {id:"2a-4", n:"Historia II", p:true},
+      {id:"2a-5", n:"Inglés I", p:true},
+      {id:"2a-6", n:"Morfología II", p:false},
+      {id:"3b-3", n:"Tecnología Gráfica", p:false},
+    ]},
+  ]},
+  { anio:"3er Año", cuats:[
+    { label:"1º cuatrimestre", mats:[
+      {id:"3b-4", n:"Medios y Estrategias", p:true},
+      {id:"4a-3", n:"Taller de Diseño Gráfico III", p:true},
+      {id:"3b-5", n:"Inglés II", p:true},
+      {id:"4a-1", n:"Tipografía II", p:false},
+      {id:"4a-2", n:"Diseño y Producción de Envases", p:true},
+    ]},
+    { label:"2º cuatrimestre", mats:[
+      {id:"4a-4", n:"Diseño y Realización Multimedial II", p:true},
+      {id:"2b-1", n:"Fotografía", p:false},
+      {id:"2b-2", n:"Marketing", p:true},
+      {id:"2b-3", n:"Portugués I", p:true},
+    ]},
+  ]},
+  { anio:"4to Año", cuats:[
+    { label:"1º cuatrimestre", mats:[
+      {id:"3a-1", n:"Ética, Deontología y Principios Jurídicos", p:true},
+      {id:"3a-2", n:"Innov, Emprend. y Gerenciamiento", p:true},
+      {id:"3a-3", n:"Práctica Profesional", p:true},
+      {id:"3a-4", n:"Portugués II", p:true},
+    ]},
+    { label:"2º cuatrimestre", mats:[
+      {id:"4b-1", n:"Práctica Profesional Supervisada", p:true},
+      {id:"4b-2", n:"Taller de Elab. del TF", p:true},
+      {id:"4b-3", n:"Pres. y Aprob. del TIF", p:true},
+    ]},
+  ]},
+];
 
-  const estadoMaterias = JSON.parse(localStorage.getItem('estadoMaterias')) || {};
+const KEY = 'malla_dgm_v1';
+let st = {};
+try { st = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
 
-  materias.forEach(m => {
-    const id = m.getAttribute('data-id');
-    const tipo = m.getAttribute('data-tipo');
+const open = new Set();
 
-    const regInput = m.querySelector('.regularidad');
-    const promInput = m.querySelector('.promocion');
+function get(id) {
+  return st[id] || { reg:false, nota_reg:'', nota_recup:'', nota_final:'', prom:false, nota_prom:'' };
+}
 
-    if (estadoMaterias[id]) {
-      regInput.checked = estadoMaterias[id].regularidad || false;
-      promInput.checked = estadoMaterias[id].promocion || false;
-    }
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {}
+}
 
-    function actualizarEstado() {
-      if (regInput.checked) promInput.checked = false;
-      if (promInput.checked) regInput.checked = false;
+function buildDots(id) {
+  const s = get(id);
+  let h = '<span class="dots">';
+  if (s.reg)       h += '<span class="dot r" title="Regular"></span>';
+  if (s.prom)      h += '<span class="dot p" title="Promoción"></span>';
+  if (s.nota_recup) h += '<span class="dot rc" title="Recuperatorio"></span>';
+  if (s.nota_final) h += '<span class="dot f" title="Final"></span>';
+  return h + '</span>';
+}
 
-      // ✅ Tachar si alguna está tildada
-      if (regInput.checked || promInput.checked) {
-        m.classList.add('hecha');
-      } else {
-        m.classList.remove('hecha');
-      }
+function render() {
+  const wrap = document.getElementById('malla');
+  wrap.innerHTML = '';
 
-      guardarEstado();
-    }
+  plan.forEach(({ anio, cuats }) => {
+    const col = document.createElement('div');
+    col.className = 'anio';
+    let h = `<h2>${anio}</h2>`;
 
-    regInput.addEventListener('change', actualizarEstado);
-    promInput.addEventListener('change', actualizarEstado);
+    cuats.forEach(({ label, mats }) => {
+      h += `<div class="cuatri"><h3>${label}</h3>`;
 
-    // Inicializar el tachado al cargar
-    if (regInput.checked || promInput.checked) {
-      m.classList.add('hecha');
-    }
-  });
+      mats.forEach(({ id, n, p }) => {
+        const s = get(id);
+        const isOpen = open.has(id);
+        let cls = 'mat-header' + (isOpen ? ' open' : '');
+        if (s.prom) cls += ' st-prom';
+        else if (s.reg) cls += ' st-reg';
 
-  function guardarEstado() {
-    const nuevoEstado = {};
-    document.querySelectorAll('.materia').forEach(m => {
-      const id = m.getAttribute('data-id');
-      const reg = m.querySelector('.regularidad').checked;
-      const prom = m.querySelector('.promocion').checked;
-      nuevoEstado[id] = {
-        regularidad: reg,
-        promocion: prom
-      };
+        h += `<div class="materia-wrap">
+          <div class="${cls}" onclick="tog('${id}')">
+            <span>${n}</span>
+            <span style="display:flex;align-items:center;gap:4px">
+              ${buildDots(id)}
+              <span class="chev">▼</span>
+            </span>
+          </div>
+          <div class="mat-detail${isOpen ? ' open' : ''}" id="det_${id}">
+            <div class="fila">
+              <label>Regular</label>
+              <input type="checkbox" ${s.reg ? 'checked' : ''} onchange="chg('${id}','reg',this.checked)">
+              <input type="number" min="1" max="10" placeholder="nota" value="${s.nota_reg}" oninput="chg('${id}','nota_reg',this.value)">
+            </div>
+            <div class="fila">
+              <label>Recuperatorio</label>
+              <input type="number" min="1" max="10" placeholder="nota" value="${s.nota_recup}" oninput="chg('${id}','nota_recup',this.value)">
+            </div>
+            <div class="fila">
+              <label>Final</label>
+              <input type="number" min="1" max="10" placeholder="nota" value="${s.nota_final}" oninput="chg('${id}','nota_final',this.value)">
+            </div>
+            ${p ? `<div class="fila">
+              <label>Promoción</label>
+              <input type="checkbox" ${s.prom ? 'checked' : ''} onchange="chg('${id}','prom',this.checked)">
+              <input type="number" min="1" max="10" placeholder="nota" value="${s.nota_prom}" oninput="chg('${id}','nota_prom',this.value)">
+            </div>` : ''}
+          </div>
+        </div>`;
+      });
+
+      h += '</div>';
     });
-    localStorage.setItem('estadoMaterias', JSON.stringify(nuevoEstado));
+
+    col.innerHTML = h;
+    wrap.appendChild(col);
+  });
+}
+
+window.tog = function(id) {
+  open.has(id) ? open.delete(id) : open.add(id);
+  render();
+};
+
+window.chg = function(id, campo, val) {
+  if (!st[id]) st[id] = {};
+  if (campo === 'reg' && val) st[id].prom = false;
+  if (campo === 'prom' && val) st[id].reg = false;
+  st[id][campo] = val;
+  save();
+
+  // Actualizar header sin re-render completo
+  const header = document.querySelector(`[onclick="tog('${id}')"]`);
+  if (header) {
+    const s = get(id);
+    header.className = 'mat-header' + (open.has(id) ? ' open' : '') +
+      (s.prom ? ' st-prom' : s.reg ? ' st-reg' : '');
+    const dotsEl = header.querySelector('.dots');
+    if (dotsEl) {
+      const tmp = document.createElement('span');
+      tmp.innerHTML = buildDots(id);
+      dotsEl.replaceWith(tmp.firstChild);
+    }
   }
+};
+
+render();
 </script>
 
 </body>
